@@ -1,6 +1,8 @@
 import unittest
 import pandas as pd
-from ..src.data_cleaning import clean_data
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+from src.data_cleaning import clean_data
 
 class TestDataCleaning(unittest.TestCase):
     def test_clean_data(self):
