@@ -1,0 +1,28 @@
+version: '3.8'
+
+
+
+services:
+  api:
+    build: .
+    ports:
+      - "8000:80"
+    volumes:
+      - .:/app
+    command: ["uvicorn", "src.api:app", "--host", "0.0.0.0", "--port", "80"]
+
+  tests:
+    user: "root"
+    build: .
+    command: ["pytest"]
+    volumes:
+      - .:/app
+      - ./data:/app/data
+
+
+  sanitycheck:
+    build: .
+    command: ["python", "sanitycheck.py"]
+    volumes:
+      - .:/app
+
