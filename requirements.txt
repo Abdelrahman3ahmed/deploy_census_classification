@@ -6,3 +6,5 @@ joblib
 pydantic
 pytest
 httpx
+huggingface_hub
+joblib

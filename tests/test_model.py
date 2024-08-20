@@ -19,6 +19,7 @@ class TestModel(unittest.TestCase):
         self.test_data = pd.get_dummies(self.test_data)
         
         # Load the training columns for consistent feature sets
+        
         train_columns = joblib.load('models/train_columns.joblib')
         
         # Ensure the same columns are used in testing as in training
@@ -34,7 +35,15 @@ class TestModel(unittest.TestCase):
         self.y_test = self.test_data['salary']
         
         # Load the model
-        self.model = joblib.load('models/model.joblib')
+        from huggingface_hub import hf_hub_download
+        import joblib
+
+        # Download the model file from the Hugging Face Hub
+        model_file = hf_hub_download(repo_id="Abdelrahman39/cenusus", filename="model.joblib")
+
+        # Load the model using joblib
+        self.model = joblib.load(model_file)
+        # self.model = joblib.load('models/model.joblib')
 
     def test_model_accuracy(self):
         # Ensure X_test is not empty
