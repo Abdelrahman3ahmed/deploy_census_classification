@@ -51,6 +51,7 @@ class TestModel(unittest.TestCase):
         # Make predictions
         predictions = self.model.predict(self.X_test)
         accuracy = (predictions == self.y_test).mean()
+        print(f"y_test sample:\n{predictions[:10]}")
         print(f"Predictions sample:\n{predictions[:10]}")
         print(f"Accuracy: {accuracy:.2f}")
 
