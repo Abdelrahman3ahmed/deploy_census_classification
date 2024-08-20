@@ -8,6 +8,9 @@ class TestModel(unittest.TestCase):
         # Load the test data
         self.test_data = pd.read_csv('data/clean_census.csv')
         
+        self.y_test = self.test_data['salary']
+        self.X_test = self.test_data.drop(columns=['salary'])
+
         # Load the label encoders
         self.label_encoders = joblib.load('models/label_encoders.joblib')
         
@@ -26,8 +29,8 @@ class TestModel(unittest.TestCase):
         self.test_data = self.test_data.reindex(columns=train_columns, fill_value=0)
         
         # Separate features and target variable
-        self.X_test = self.test_data.drop(columns=['salary'])
-        self.y_test = self.test_data['salary']
+        
+
         
         # Download the model file from the Hugging Face Hub
         model_file = hf_hub_download(repo_id="Abdelrahman39/cenusus", filename="model.joblib")
