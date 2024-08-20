@@ -25,10 +25,10 @@ class TestModel(unittest.TestCase):
         # Ensure the same columns are used in testing as in training
         self.test_data = self.test_data.reindex(columns=train_columns, fill_value=0)
         
-        # Ensure 'salary' is present for evaluation
-        if 'salary' not in self.test_data.columns:
-            # Add the 'salary' column back if missing
-            self.test_data['salary'] = 0
+        # # Ensure 'salary' is present for evaluation
+        # if 'salary' not in self.test_data.columns:
+        #     # Add the 'salary' column back if missing
+        #     self.test_data['salary'] = 0
         
         # Separate features and target variable
         self.X_test = self.test_data.drop(columns=['salary'])
