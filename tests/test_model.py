@@ -18,6 +18,7 @@ class TestModel(unittest.TestCase):
         
 
         self.y_test = self.test_data['salary']
+        self.X_test = self.test_data.drop(columns=['salary'])
         # Convert categorical features to numeric using one-hot encoding
         self.test_data = pd.get_dummies(self.test_data)
         
@@ -34,7 +35,7 @@ class TestModel(unittest.TestCase):
         
         # # Separate features and target variable
         
-        self.X_test = self.test_data.drop(columns=['salary'])
+        
         
         
         # # Download the model file from the Hugging Face Hub
