@@ -2,6 +2,9 @@ import unittest
 import joblib
 import pandas as pd
 from huggingface_hub import hf_hub_download
+from ucimlrepo import fetch_ucirepo  # Import fetch_ucirepo
+from sklearn.preprocessing import LabelEncoder  # Import LabelEncoder
+
 
 class TestModel(unittest.TestCase):
     def setUp(self):
