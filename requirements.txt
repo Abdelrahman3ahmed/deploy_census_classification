@@ -9,3 +9,4 @@ pytest
 httpx
 huggingface_hub
 joblib
+ucimlrepo
