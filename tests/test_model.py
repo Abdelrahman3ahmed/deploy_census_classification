@@ -16,33 +16,25 @@ class TestModel(unittest.TestCase):
             if column in self.test_data.columns:
                 self.test_data[column] = le.transform(self.test_data[column])
         
-
-        self.y_test = self.test_data['salary']
-        self.X_test = self.test_data.drop(columns=['salary'])
         # Convert categorical features to numeric using one-hot encoding
         self.test_data = pd.get_dummies(self.test_data)
         
-        # # Load the training columns for consistent feature sets
+        # Load the training columns for consistent feature sets
         train_columns = joblib.load('models/train_columns.joblib')
         
-        # # Ensure the same columns are used in testing as in training
+        # Ensure the same columns are used in testing as in training
         self.test_data = self.test_data.reindex(columns=train_columns, fill_value=0)
         
-        # # # Ensure 'salary' is present for evaluation
-        # # if 'salary' not in self.test_data.columns:
-        # #     # Add the 'salary' column back if missing
-        # #     self.test_data['salary'] = 0
+        # Separate features and target variable
+        self.X_test = self.test_data.drop(columns=['salary'])
+        self.y_test = self.test_data['salary']
         
-        # # Separate features and target variable
-        
-        
-        
-        
-        # # Download the model file from the Hugging Face Hub
+        # Download the model file from the Hugging Face Hub
         model_file = hf_hub_download(repo_id="Abdelrahman39/cenusus", filename="model.joblib")
 
-        # # Load the model using joblib
+        # Load the model using joblib
         self.model = joblib.load(model_file)
+
 
     def test_model_accuracy(self):
         print("test data full",  self.test_data)
