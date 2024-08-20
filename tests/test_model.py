@@ -17,7 +17,7 @@ class TestModel(unittest.TestCase):
 
         # Initialize label encoders
         self.label_encoders = {}
-        
+
         # Create a DataFrame from the features for further processing
         self.test_data = pd.DataFrame(self.X_test)
 
@@ -29,16 +29,18 @@ class TestModel(unittest.TestCase):
 
         # Convert categorical features to numeric using one-hot encoding
         self.test_data = pd.get_dummies(self.test_data)
-        
+
         # Load the training columns for consistent feature sets
         train_columns = joblib.load('models/train_columns.joblib')
-        
+
         # Ensure the same columns are used in testing as in training
         self.test_data = self.test_data.reindex(columns=train_columns, fill_value=0)
-        
-        # Separate features and target variable
+
+        # Update self.X_test with processed test data
         self.X_test = self.test_data
-        self.y_test = pd.Series(self.y_test)
+        
+        # Convert self.y_test to a Series, ensuring it is a one-dimensional array
+        self.y_test = pd.Series(self.y_test.squeeze())
 
         # Download the model file from the Hugging Face Hub
         model_file = hf_hub_download(repo_id="Abdelrahman39/cenusus", filename="model.joblib")
