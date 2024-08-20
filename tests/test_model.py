@@ -5,20 +5,25 @@ from huggingface_hub import hf_hub_download
 
 class TestModel(unittest.TestCase):
     def setUp(self):
-        # Load the test data
-        self.test_data = pd.read_csv('data/clean_census.csv')
-        
-        self.y_test = self.test_data['salary']
-        self.X_test = self.test_data.drop(columns=['salary'])
+        # Fetch dataset
+        census_income = fetch_ucirepo(id=20)
 
-        # Load the label encoders
-        self.label_encoders = joblib.load('models/label_encoders.joblib')
+        # Extract features and targets
+        self.X_test = census_income.data.features
+        self.y_test = census_income.data.targets
+
+        # Initialize label encoders
+        self.label_encoders = {}
         
-        # Encode categorical features in test data
-        for column, le in self.label_encoders.items():
-            if column in self.test_data.columns:
-                self.test_data[column] = le.transform(self.test_data[column])
-        
+        # Create a DataFrame from the features for further processing
+        self.test_data = pd.DataFrame(self.X_test)
+
+        # Encode categorical features
+        for column in self.test_data.select_dtypes(include=['object']).columns:
+            le = LabelEncoder()
+            self.test_data[column] = le.fit_transform(self.test_data[column])
+            self.label_encoders[column] = le
+
         # Convert categorical features to numeric using one-hot encoding
         self.test_data = pd.get_dummies(self.test_data)
         
@@ -29,9 +34,9 @@ class TestModel(unittest.TestCase):
         self.test_data = self.test_data.reindex(columns=train_columns, fill_value=0)
         
         # Separate features and target variable
-        
+        self.X_test = self.test_data
+        self.y_test = pd.Series(self.y_test)
 
-        
         # Download the model file from the Hugging Face Hub
         model_file = hf_hub_download(repo_id="Abdelrahman39/cenusus", filename="model.joblib")
 
