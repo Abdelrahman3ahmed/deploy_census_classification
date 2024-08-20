@@ -65,7 +65,7 @@ class TestModel(unittest.TestCase):
         print(f"Predictions sample:\n{predictions[:10]}")
         print(f"Accuracy: {accuracy:.2f}")
 
-        self.assertGreater(accuracy, 0.5, "Model accuracy is below threshold")
+        self.assertGreater(accuracy, 0.7, "Model accuracy is below threshold")
 
     def test_model_slice_performance(self):
         # Ensure 'sex' column exists and is correctly encoded in X_test
@@ -100,7 +100,7 @@ class TestModel(unittest.TestCase):
         print(f"Predictions slice sample:\n{predictions_mapped[:10]}")
         print(f"Slice Accuracy: {accuracy:.2f}")
 
-        self.assertGreater(accuracy, 0.5, "Model slice performance is below threshold")
+        self.assertGreater(accuracy, 0.7, "Model slice performance is below threshold")
 
 
 
