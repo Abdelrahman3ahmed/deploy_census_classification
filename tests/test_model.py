@@ -68,20 +68,14 @@ class TestModel(unittest.TestCase):
         self.assertGreater(accuracy, 0.0, "Model accuracy is below threshold")
 
     def test_model_slice_performance(self):
-        print("test data slicing",  self.test_data)
-        # Ensure 'sex' column exists and is correctly encoded
-        if 'sex' not in self.test_data.columns:
+        # Ensure 'sex' column exists and is correctly encoded in X_test
+        if 'sex' not in self.X_test.columns:
             self.fail("Column 'sex' is missing from test data")
 
-        slice_data = self.test_data[self.test_data['sex'] == 1]  # Adjust based on encoding (1 for 'Male', 0 for 'Female')
-        
-        # if 'salary' not in slice_data.columns:
-        #     # Add the 'salary' column back if missing
-        #     slice_data['salary'] = 0
-        
-        X_test_slice = slice_data.drop(columns=['salary'])
-        y_test_slice = slice_data['salary']
-        
+        # Slice the test data based on the 'sex' column
+        X_test_slice = self.X_test[self.X_test['sex'] == 1]  # Adjust based on encoding (1 for 'Male', 0 for 'Female')
+        y_test_slice = self.y_test[self.X_test['sex'] == 1]
+
         # Ensure X_test_slice is not empty
         if X_test_slice.empty:
             self.fail("Slice features are empty")
@@ -91,12 +85,17 @@ class TestModel(unittest.TestCase):
 
         # Make predictions
         predictions = self.model.predict(X_test_slice)
-        accuracy = (predictions == y_test_slice).mean()
+
+        # Convert predictions to the same format as y_test_slice for comparison
+        predictions_mapped = pd.Series(predictions).map(lambda x: 1 if x == '>50K' else 0)
+
+        accuracy = (predictions_mapped == y_test_slice).mean()
         print(f"real slice sample:\n{y_test_slice[:10]}")
-        print(f"Predictions slice sample:\n{predictions[:10]}")
+        print(f"Predictions slice sample:\n{predictions_mapped[:10]}")
         print(f"Slice Accuracy: {accuracy:.2f}")
 
         self.assertGreater(accuracy, 0.0, "Model slice performance is below threshold")
+
 
 if __name__ == "__main__":
     unittest.main()
