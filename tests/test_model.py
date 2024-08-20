@@ -20,10 +20,10 @@ class TestModel(unittest.TestCase):
         self.test_data = pd.get_dummies(self.test_data)
         
         # # Load the training columns for consistent feature sets
-        train_columns = joblib.load('models/train_columns.joblib')
+        # train_columns = joblib.load('models/train_columns.joblib')
         
         # # Ensure the same columns are used in testing as in training
-        self.test_data = self.test_data.reindex(columns=train_columns, fill_value=0)
+        # self.test_data = self.test_data.reindex(columns=train_columns, fill_value=0)
         
         # # # Ensure 'salary' is present for evaluation
         # # if 'salary' not in self.test_data.columns:
