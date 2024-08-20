@@ -80,6 +80,7 @@ class TestModel(unittest.TestCase):
         # Make predictions
         predictions = self.model.predict(X_test_slice)
         accuracy = (predictions == y_test_slice).mean()
+        print(f"real slice sample:\n{y_test_slice[:10]}")
         print(f"Predictions slice sample:\n{predictions[:10]}")
         print(f"Slice Accuracy: {accuracy:.2f}")
 
