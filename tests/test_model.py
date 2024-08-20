@@ -1,6 +1,8 @@
 import unittest
 import joblib
 import pandas as pd
+from huggingface_hub import hf_hub_download
+import joblib
 
 class TestModel(unittest.TestCase):
     def setUp(self):
@@ -35,8 +37,7 @@ class TestModel(unittest.TestCase):
         self.y_test = self.test_data['salary']
         
         # Load the model
-        from huggingface_hub import hf_hub_download
-        import joblib
+
 
         # Download the model file from the Hugging Face Hub
         model_file = hf_hub_download(repo_id="Abdelrahman39/cenusus", filename="model.joblib")
