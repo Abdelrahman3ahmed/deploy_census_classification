@@ -68,15 +68,16 @@ class TestModel(unittest.TestCase):
         self.assertGreater(accuracy, 0.0, "Model accuracy is below threshold")
 
     def test_model_slice_performance(self):
+        print("test data slicing",  self.test_data)
         # Ensure 'sex' column exists and is correctly encoded
         if 'sex' not in self.test_data.columns:
             self.fail("Column 'sex' is missing from test data")
 
         slice_data = self.test_data[self.test_data['sex'] == 1]  # Adjust based on encoding (1 for 'Male', 0 for 'Female')
         
-        if 'salary' not in slice_data.columns:
-            # Add the 'salary' column back if missing
-            slice_data['salary'] = 0
+        # if 'salary' not in slice_data.columns:
+        #     # Add the 'salary' column back if missing
+        #     slice_data['salary'] = 0
         
         X_test_slice = slice_data.drop(columns=['salary'])
         y_test_slice = slice_data['salary']
