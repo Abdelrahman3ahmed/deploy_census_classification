@@ -2,7 +2,6 @@ import unittest
 import joblib
 import pandas as pd
 from huggingface_hub import hf_hub_download
-import joblib
 
 class TestModel(unittest.TestCase):
     def setUp(self):
@@ -21,13 +20,12 @@ class TestModel(unittest.TestCase):
         self.test_data = pd.get_dummies(self.test_data)
         
         # Load the training columns for consistent feature sets
-        
         train_columns = joblib.load('models/train_columns.joblib')
         
         # Ensure the same columns are used in testing as in training
         self.test_data = self.test_data.reindex(columns=train_columns, fill_value=0)
         
-        # Ensure 'salary' is present and reindex it
+        # Ensure 'salary' is present for evaluation
         if 'salary' not in self.test_data.columns:
             # Add the 'salary' column back if missing
             self.test_data['salary'] = 0
@@ -36,15 +34,11 @@ class TestModel(unittest.TestCase):
         self.X_test = self.test_data.drop(columns=['salary'])
         self.y_test = self.test_data['salary']
         
-        # Load the model
-
-
         # Download the model file from the Hugging Face Hub
         model_file = hf_hub_download(repo_id="Abdelrahman39/cenusus", filename="model.joblib")
 
         # Load the model using joblib
         self.model = joblib.load(model_file)
-        # self.model = joblib.load('models/model.joblib')
 
     def test_model_accuracy(self):
         # Ensure X_test is not empty
@@ -54,6 +48,7 @@ class TestModel(unittest.TestCase):
         print(f"X_test sample:\n{self.X_test.head()}")
         print(f"y_test sample:\n{self.y_test.head()}")
 
+        # Make predictions
         predictions = self.model.predict(self.X_test)
         accuracy = (predictions == self.y_test).mean()
         print(f"Predictions sample:\n{predictions[:10]}")
@@ -62,7 +57,12 @@ class TestModel(unittest.TestCase):
         self.assertGreater(accuracy, 0.0, "Model accuracy is below threshold")
 
     def test_model_slice_performance(self):
+        # Ensure 'sex' column exists and is correctly encoded
+        if 'sex' not in self.test_data.columns:
+            self.fail("Column 'sex' is missing from test data")
+
         slice_data = self.test_data[self.test_data['sex'] == 1]  # Adjust based on encoding (1 for 'Male', 0 for 'Female')
+        
         if 'salary' not in slice_data.columns:
             # Add the 'salary' column back if missing
             slice_data['salary'] = 0
@@ -77,6 +77,7 @@ class TestModel(unittest.TestCase):
         print(f"X_test_slice sample:\n{X_test_slice.head()}")
         print(f"y_test_slice sample:\n{y_test_slice.head()}")
 
+        # Make predictions
         predictions = self.model.predict(X_test_slice)
         accuracy = (predictions == y_test_slice).mean()
         print(f"Predictions slice sample:\n{predictions[:10]}")
