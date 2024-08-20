@@ -39,7 +39,15 @@ import joblib
 app = FastAPI()
 
 # Load the model and label encoders
-model = joblib.load('models/model.joblib')
+from huggingface_hub import hf_hub_download
+import joblib
+
+# Download the model file from the Hugging Face Hub
+model_file = hf_hub_download(repo_id="Abdelrahman39/cenusus", filename="model.joblib")
+
+# Load the model using joblib
+model = joblib.load(model_file)
+# model = joblib.load('models/model.joblib')
 label_encoders = joblib.load('models/label_encoders.joblib')
 
 class PredictionInput(BaseModel):
