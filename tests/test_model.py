@@ -89,12 +89,18 @@ class TestModel(unittest.TestCase):
         # Convert predictions to the same format as y_test_slice for comparison
         predictions_mapped = pd.Series(predictions).map(lambda x: 1 if x == '>50K' else 0)
 
+        # Reset index to ensure they are comparable
+        predictions_mapped.reset_index(drop=True, inplace=True)
+        y_test_slice.reset_index(drop=True, inplace=True)
+
+        # Calculate accuracy
         accuracy = (predictions_mapped == y_test_slice).mean()
         print(f"real slice sample:\n{y_test_slice[:10]}")
         print(f"Predictions slice sample:\n{predictions_mapped[:10]}")
         print(f"Slice Accuracy: {accuracy:.2f}")
 
         self.assertGreater(accuracy, 0.0, "Model slice performance is below threshold")
+
 
 
 if __name__ == "__main__":
