@@ -41,6 +41,7 @@ class TestModel(unittest.TestCase):
         self.model = joblib.load(model_file)
 
     def test_model_accuracy(self):
+        print("test data full",  self.test_data)
         # Ensure X_test is not empty
         if self.X_test.empty:
             self.fail("Test features are empty")
