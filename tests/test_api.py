@@ -15,7 +15,7 @@
 #         "fnlwgt": 226802,
 #         "education": "11th",
 #         "education_num": 7,
-#         "marital_status": "Never-married",
+#         "marital-status": "Never-married",
 #         "occupation": "Machine-op-inspct",
 #         "relationship": "Own-child",
 #         "race": "Black",
@@ -76,12 +76,14 @@ def predict(input_data: PredictionInput):
         # Add other mappings as necessary
     }
     
+
+    print("the date input before mapping",input_dict)
     # Transform keys if needed
     for key in list(input_dict.keys()):
         if key in column_mapping:
             new_key = column_mapping[key]
             input_dict[new_key] = input_dict.pop(key)
-
+    print("the date input ",input_dict)
     try:
         for column, le in label_encoders.items():
             if column in input_dict:
@@ -91,5 +93,6 @@ def predict(input_data: PredictionInput):
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
     
+    print("the date input for model",input_dict)
     prediction = model.predict([list(input_dict.values())])
     return {"prediction": prediction[0]}

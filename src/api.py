@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI , HTTPException
 from pydantic import BaseModel
 import joblib
 
@@ -50,9 +50,32 @@ def read_root():
 @app.post("/predict/")
 def predict(input_data: PredictionInput):
     input_dict = input_data.dict()
-    for column, le in label_encoders.items():
-        input_dict[column] = le.transform([input_dict[column]])[0]
-    data = [list(input_dict.values())]
-    prediction = model.predict(data)
+    
+    # Example mapping of keys if necessary
+    column_mapping = {
+        'marital_status': 'marital-status',
+        'native_country': 'native-country'
+        # Add other mappings as necessary
+    }
+    
+
+    print("the date input before mapping",input_dict)
+    # Transform keys if needed
+    for key in list(input_dict.keys()):
+        if key in column_mapping:
+            new_key = column_mapping[key]
+            input_dict[new_key] = input_dict.pop(key)
+    print("the date input ",input_dict)
+    try:
+        for column, le in label_encoders.items():
+            if column in input_dict:
+                input_dict[column] = le.transform([input_dict[column]])[0]
+            else:
+                raise ValueError(f"Column {column} not found in input data")
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    
+    print("the date input for model",input_dict)
+    prediction = model.predict([list(input_dict.values())])
     return {"prediction": prediction[0]}
 
