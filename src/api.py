@@ -4,7 +4,12 @@ import joblib
 
 app = FastAPI()
 
-model = joblib.load('/app/models/model.joblib')
+# model = joblib.load('/app/models/model.joblib')
+model_file = hf_hub_download(repo_id="Abdelrahman39/cenusus", filename="model.joblib")
+
+# Load the model using joblib
+model = joblib.load(model_file)
+
 label_encoders = joblib.load('/app/models/label_encoders.joblib')
 
 class PredictionInput(BaseModel):
