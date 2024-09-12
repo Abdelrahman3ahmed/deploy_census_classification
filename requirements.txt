@@ -10,3 +10,5 @@ httpx
 huggingface_hub
 joblib
 ucimlrepo
+setuptools>=65.0.0
+
