@@ -9,6 +9,6 @@ pytest
 httpx
 huggingface_hub
 ucimlrepo
-setuptools>=70.3.0
+#setuptools>=70.3.0
 pip>=24.0
 wheel

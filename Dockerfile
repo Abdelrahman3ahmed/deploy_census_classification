@@ -3,7 +3,7 @@ FROM python:3.12-slim
 WORKDIR /app
 
 # Upgrade pip and setuptools
-RUN pip install --upgrade pip setuptools wheel
+# RUN pip install --upgrade pip setuptools wheel
 
 # Copy the requirements file
 COPY requirements.txt .
