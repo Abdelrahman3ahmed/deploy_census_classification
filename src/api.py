@@ -1,5 +1,6 @@
 from fastapi import FastAPI , HTTPException
 from pydantic import BaseModel
+from huggingface_hub import hf_hub_download
 import joblib
 
 app = FastAPI()
